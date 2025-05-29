@@ -1,5 +1,6 @@
 <script>
     import { countries } from "$lib";
+    import { base } from '$app/paths';
   
     let current = 'vietnam.webp';
     let reveal = false;
@@ -21,7 +22,7 @@
     <div class="flex-grow flex items-center justify-center w-full">
     {#if current}
       <img
-        src={`/countries/${current}`}
+        src={`${base ?? ''}/countries/${current}`}
         alt="Country shape"
         class="max-w-xs sm:max-w-md w-full h-auto transition-transform duration-300"
         style="transform: rotate({rotation}deg);"
