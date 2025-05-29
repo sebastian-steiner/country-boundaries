@@ -19,7 +19,7 @@ const config = {
 			strict: true
 		}),
 		paths: {
-			base: '/country-boundaries'
+			base: process.argv.includes('dev') ? '' : '/country-boundaries'
 		}
 	}
 };
