@@ -21,12 +21,14 @@
   <main class="min-h-screen flex flex-col items-center justify-between p-4">
     <div class="flex-grow flex items-center justify-center w-full">
     {#if current}
+    <div class="relative w-[80vw] max-w-xs sm:max-w-md aspect-square flex items-center justify-center">
       <img
         src={`${base ?? ''}/countries/${current}`}
         alt="Country shape"
-        class="max-w-xs sm:max-w-md w-full h-auto transition-transform duration-300"
+        class="w-[70%] h-[70%] object-contain transition-transform duration-300"
         style="transform: rotate({rotation}deg);"
         />
+        </div>
     {/if}
 
     </div>
