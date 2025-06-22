@@ -1,23 +1,7 @@
 <script lang="ts">
-  import {
-    countries,
-    type Settings,
-    shuffle,
-    type Game,
-    emptyGame,
-  } from "$lib";
+  import { countries, shuffle, emptyGame, game, settings } from "$lib";
   import { base } from "$app/paths";
-  import { PersistentState } from "@friendofsvelte/state";
-
-  let game = new PersistentState<Game>("game", emptyGame(), "sessionStorage");
-  let settings = new PersistentState<Settings>(
-    "settings",
-    {
-      rotateRandomly: true,
-      orientAfterGuess: true,
-    },
-    "localStorage"
-  );
+  import settingsIcon from "$lib/images/settings.svg";
 
   function initGame() {
     let remainingCountries = countries.flatMap((c) => [c]);
@@ -64,16 +48,33 @@
   if (game.current?.country == null) {
     initGame();
   }
+
+  // if changing settings, we should check that they're applied correctly
+  if (!settings.current.rotateRandomly) {
+    game.current.rotation = 0;
+  } else if (!game.current.reveal) {
+    game.current.rotation = Math.floor(Math.random() * 360);
+  }
 </script>
 
-<main class="min-h-screen flex flex-col items-center justify-between p-4">
+<main class="min-h-screen flex flex-col items-center justify-between">
   {#if game.current.country}
-    <!-- Remaining counter -->
-    <div class="w-full text-center text-gray-600 text-sm mb-2">
-      <p class="w-full text-center text-gray-800 text-2xl font-semibold mb-4">
-        Remaining: {game.current.remaining.length}
-        {game.current.remaining.length === 1 ? "country" : "countries"}
-      </p>
+    <div class="w-full shadow-lg mb-4 flex justify-center">
+      <div
+        class="relative flex flex-row justify-center h-18 w-full items-center md:max-w-6xl"
+      >
+        <p class="w-full text-center text-gray-800 text-2xl font-semibold">
+          Rem: {game.current.remaining.length}
+          {game.current.remaining.length === 1 ? "country" : "countries"}
+        </p>
+        <a
+          aria-label="Settings"
+          class="absolute right-4"
+          href={`${base ?? ""}/settings`}
+        >
+          <img alt="Settings Icon" class="w-8 h-8" src={settingsIcon} />
+        </a>
+      </div>
     </div>
     <div class="flex-grow flex items-center justify-center w-full">
       <div
@@ -89,7 +90,7 @@
     </div>
 
     <div
-      class="w-full flex flex-col items-center gap-4 mt-4 sm:mt-8 pb-6 sm:pb-8"
+      class="w-full flex flex-col items-center gap-4 mt-4 sm:mt-8 pb-6 sm:pb-8 p-4"
     >
       {#if game.current.reveal}
         <p class="text-center text-xl font-semibold">
