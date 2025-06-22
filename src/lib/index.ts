@@ -10,3 +10,4 @@ export const countries = Object.entries(countryModules).map(([path]) => {
 export * from "./types";
 export * from "./utils";
 export * from "./state";
+export * from "./game";

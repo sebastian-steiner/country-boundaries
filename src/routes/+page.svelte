@@ -1,48 +1,14 @@
 <script lang="ts">
-  import { countries, shuffle, emptyGame, game, settings } from "$lib";
+  import {
+    game,
+    settings,
+    initGame,
+    markFalse,
+    markCorrect,
+    revealName,
+  } from "$lib";
   import { base } from "$app/paths";
   import settingsIcon from "$lib/images/settings.svg";
-
-  function initGame() {
-    let remainingCountries = countries.flatMap((c) => [c]);
-    shuffle(remainingCountries);
-    game.current = emptyGame();
-    game.current.remaining = remainingCountries;
-    pickNext();
-  }
-
-  function pickNext() {
-    if (game.current.remaining.length === 0) {
-      game.current.country = undefined;
-      return;
-    }
-
-    game.current.country = game.current.remaining[0];
-
-    if (settings.current.rotateRandomly) {
-      game.current.rotation = Math.floor(Math.random() * 360);
-    } else {
-      game.current.rotation = 0;
-    }
-    game.current.reveal = false;
-  }
-
-  function markCorrect() {
-    game.current.remaining = game.current.remaining.filter((_, i) => i !== 0);
-    pickNext();
-  }
-
-  function markFalse() {
-    game.current.remaining = shuffle(game.current.remaining);
-    pickNext();
-  }
-
-  function revealName() {
-    if (settings.current.orientAfterGuess) {
-      game.current.rotation = 0;
-    }
-    game.current.reveal = true;
-  }
 
   // don't re-initialize an already running game
   if (game.current?.country == null) {
