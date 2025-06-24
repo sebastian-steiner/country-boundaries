@@ -9,6 +9,7 @@
   } from "$lib";
   import { base } from "$app/paths";
   import settingsIcon from "$lib/images/settings.svg";
+  import reloadIcon from "$lib/images/reload.svg";
 
   // don't re-initialize an already running game
   if (game.current?.country == null) {
@@ -30,16 +31,17 @@
         class="relative flex flex-row justify-center h-18 w-full items-center md:max-w-6xl"
       >
         <p class="w-full text-center text-gray-800 text-2xl font-semibold">
-          Rem: {game.current.remaining.length}
+          {game.current.remaining.length}
           {game.current.remaining.length === 1 ? "country" : "countries"}
         </p>
-        <a
-          aria-label="Settings"
-          class="absolute right-4"
-          href={`${base ?? ""}/settings`}
-        >
-          <img alt="Settings Icon" class="w-8 h-8" src={settingsIcon} />
-        </a>
+        <div class="absolute right-4 flex flex-row">
+          <button aria-label="Restart" on:click={() => initGame()}>
+            <img alt="Restart" class="w-8 h-8" src={reloadIcon} />
+          </button>
+          <a aria-label="Settings" href={`${base ?? ""}/settings`}>
+            <img alt="Settings Icon" class="w-8 h-8" src={settingsIcon} />
+          </a>
+        </div>
       </div>
     </div>
     <div class="flex-grow flex items-center justify-center w-full">
